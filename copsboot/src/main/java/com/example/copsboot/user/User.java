@@ -1,17 +1,10 @@
 package com.example.copsboot.user;
 
 import com.example.orm.jpa.AbstractEntity;
-
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "copsboot_user")
@@ -34,6 +27,14 @@ public class User extends AbstractEntity<UserId> {
         this.email = email;
         this.password = password;
         this.roles = roles;
+    }
+
+    public static User createOfficer(UserId userId, String email, String encodedPassword) {
+        return new User(userId, email, encodedPassword, Set.of(UserRole.OFFICER));
+    }
+
+    public static User createCaptain(UserId userId, String email, String encodedPassword) {
+        return new User(userId, email, encodedPassword, Set.of(UserRole.CAPTAIN));
     }
 
     public String getEmail() {
