@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @MappedSuperclass
 public abstract class AbstractEntityId<T extends Serializable> implements Serializable, EntityId<T> {
@@ -17,7 +18,7 @@ public abstract class AbstractEntityId<T extends Serializable> implements Serial
     }
 
     protected AbstractEntityId(T id) {
-        this.id = Objects.requireNonNull(id);
+        this.id = checkNotNull(id);
     }
 
     @Override
