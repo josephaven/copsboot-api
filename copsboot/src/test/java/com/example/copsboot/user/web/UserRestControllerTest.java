@@ -1,6 +1,6 @@
 package com.example.copsboot.user.web;
 
-import com.example.copsboot.infraestructure.test.CopsbootControllerTest;
+import com.example.copsboot.infrastructure.test.CopsbootControllerTest;
 import com.example.copsboot.user.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,21 +8,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.util.UUID;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-// tag::class-annotations[]
 @CopsbootControllerTest(UserRestController.class)
 class UserRestControllerTest {
-    // end::class-annotations[]
 
     @Autowired
     private MockMvc mockMvc;
@@ -80,5 +77,22 @@ class UserRestControllerTest {
                                 }
                                 """))
                 .andExpect(status().isForbidden()); // <.>
+    }
+
+    @Test
+    void givenEmptyMobileToken_badRequestIsReturned() throws Exception {
+        mockMvc.perform(post("/api/users")
+                        .with(jwt().jwt(builder -> builder.subject(UUID.randomUUID().toString()))
+                                .authorities(new SimpleGrantedAuthority("ROLE_OFFICER")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "mobileToken": ""
+                                }
+                                """)) //<.>
+                .andExpect(status().isBadRequest()) //<.>
+                .andDo(print()); //<.>
+
+        verify(userService, never()).createUser(any(CreateUserParameters.class)); //<.>
     }
 }
