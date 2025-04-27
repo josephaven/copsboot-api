@@ -1,4 +1,4 @@
-package com.example.copsboot.infraestructure.test;
+package com.example.copsboot.infrastructure.test;
 
 import org.springframework.boot.test.autoconfigure.restdocs.RestDocsMockMvcConfigurationCustomizer;
 import org.springframework.boot.test.context.TestConfiguration;

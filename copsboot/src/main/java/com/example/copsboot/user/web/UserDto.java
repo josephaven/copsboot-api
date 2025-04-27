@@ -1,7 +1,6 @@
 package com.example.copsboot.user.web;
 
 import com.example.copsboot.user.User;
-
 import java.util.UUID;
 
 public record UserDto(UUID userId, String email, UUID authServerId, String mobileToken) {

@@ -1,11 +1,9 @@
 package com.example.orm.jpa;
 
 import com.example.util.ArtifactForFramework;
-
 import jakarta.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Objects;
-
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 
